@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div style="margin-left: 39%; margin-top: 5%">
+    <button id="Start" class="btn-danger" style=" width: 420px; height: 120px;">Start</button>
+</div>
+<div style="margin-left: 39%; margin-top: 5%">
+    <button id="Stop" class="btn-danger" style=" width: 420px; height: 120px;" >Stop</button>
+</div>
+<div style="margin-left: 40%;">
+    <p>set bpm</p>
+    <textarea id="speed" style="height: 24px;"  value="Speed">120</textarea>
+
+</div>
+<div style="margin-left: 40%;">
+    <p>set acceleration time in seconds</p>
+    <textarea id="Time" style="height: 24px;"  value="time in seconds">2</textarea>
+
+</div>
+<div style="margin-left: 40%;">
+    <p>set acceleration</p>
+    <textarea id= "Acceleration" style="height: 24px;"  value="bpm">10</textarea>
+
+</div>
+
+<script>
+    window.onload=function(){
+        PlaySound();
+    }
+    function PlaySound() {
+        let startBtn = $('#Start');
+        let stopBtn = $('#Stop');
+        let counter = 0;
+        let time = $('#Time');
+        let acceleration = $('#Acceleration').val();
+        let accelerationValue = Number($('#Acceleration').val());
+        let speedValue = Number($('#speed').val());
+
+        $(startBtn).on('click',function () {
+            let speed = $('#speed').val();
+            timer = setInterval(step,60/speed*1000);
+            accelerator = setInterval(accelerate,1000);
+            $(startBtn).off();
+        });
+        $(stopBtn).on('click',function () {
+            clearInterval(timer)
+            clearInterval(accelerator)
+            $(startBtn).on('click',function () {
+                let speed = $('#speed').val();
+                time = $('#Time').val();
+                acceleration = $('#Acceleration').val();
+                counter = 0;
+                timer = setInterval(step,60/speed*1000);
+                accelerator = setInterval(accelerate,1000);
+                $(startBtn).off();
+            });
+        });
+
+
+        function accelerate(){
+            counter ++;
+            console.log(counter);
+            console.log(speedValue);
+            console.log(accelerationValue);
+            if(Number(counter) === Number($('#Time').val())){
+                counter = 0;
+                accelerationValue += Number($('#Acceleration').val());
+                speedValue += accelerationValue;
+                clearInterval(timer);
+                timer = setInterval(step,60/speedValue*1000);
+
+
+            }
+        }
+
+        function step() {
+            new Audio('./bottle_120bpm_4-4time_2beats_stereo_EcCOF2.mp3').play()
+        }
+    }
+
+</script>
+</body>
+</html>
